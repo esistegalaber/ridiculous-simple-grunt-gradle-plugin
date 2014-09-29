@@ -1,0 +1,25 @@
+/**
+ * Compile the Coffee Sources to JS during 'compileJava'.
+ */
+task compileCoffee(type: Exec) {
+    workingDir project.projectDir
+    commandLine 'grunt', 'compile'
+}
+compileJava.dependsOn('compileCoffee')
+
+/**
+ * Compile the Coffee Test Sources and execute Jasmine tests during 'test'.
+ */
+task testJs(type: Exec, dependsOn: 'compileCoffee') {
+    workingDir project.projectDir
+    commandLine 'grunt', 'test'
+}
+test.dependsOn('testJs')
+
+/**
+ * Clean the generated / copied js and styling resources.
+ */
+task cleanFrontend(type: Delete) {
+    delete 'src/main/webapp/js', 'src/main/webapp/styles', 'src/main/webapp/fonts'
+}
+clean.dependsOn 'cleanFrontend'
